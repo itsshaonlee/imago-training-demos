@@ -1,11 +1,16 @@
 # Workshop on Exploring Imago Datasets with R
-> _Satellite-derived environmental data for the rest of us_
+> _Making satellite data usable, useful, and used_
 
 <img src="assets/Imago-logo.png" alt="Imago Logo" width="300"/>
 
 This repository contains materials for our workshop on exploring Imago datasets programmatically using R and Python (coming soon!). The workshop focuses on working with satellite-derived environmental data products — including summer maximum temperature and the Index of Multiple Deprivation — across small-area geographies, with live coding in R.
 
-[![Launch Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/itsshaonlee/IMAGO-TRAINING-DEMOS/HEAD?urlpath=rstudio&filepath=demo1.Rmd)
+## 🚀 Launch Workshop
+
+| Demo | Language | Launch |
+|------|----------|--------|
+| Exploring Imago Datasets | R | [Notebook](https://imago-sdruk.github.io/Imago_training/demo1.html), [![Launch Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/itsshaonlee/IMAGO-TRAINING-DEMOS/HEAD?urlpath=rstudio&filepath=demo1.Rmd) |
+| Exploring Imago Datasets | Python | [Notebook](https://imago-sdruk.github.io/Imago_training/demo1.html), _Live code coming soon_ |
 
 ## 🛠️ Contributing
 We welcome contributions of all kinds—code, documentation, ideas, and more!  
@@ -15,7 +20,6 @@ Please read our [Contributing Guidelines](CONTRIBUTING.md) for step-by-step inst
 - Use issue and pull request templates
 - Get acknowledged with the All Contributors Bot
 - Resolve merge conflicts
-
 If you're new to open source, our guidelines are designed to make it easy for you to get started.  
 If you have questions, open an issue or start a discussion!
 
