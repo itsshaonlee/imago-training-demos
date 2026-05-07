@@ -44,9 +44,7 @@ library(fs)          # File and directory helpers
 MSOA boundary data can be downloaded from the [Imago data catalogue](https://imago.ac.uk/data).
 
 ```{r}
-msoa_uk <- read_sf("./data/UK_MSOA_IZB_SDZ/UK_MSOA_IZB_SDZ.shp")
-msoa_uk <- msoa_uk %>%
-  rename(data_zone_code = dt_zn_c)
+msoa_uk <- read_sf("./data/UK_MSOA_IZB_SDZ/UK_MSOA_IZB_SDZ.gpkg")
 ```
 
 Load MSOA boundary data and Imago product, also from the [Imago data catalogue](https://imago.ac.uk/data).
