@@ -9,7 +9,7 @@ This repository contains materials for our workshop on exploring Imago datasets 
 
 | Demo | Language | Launch |
 |------|----------|--------|
-| Exploring Imago Datasets | R | [Notebook](https://imago-sdruk.github.io/Imago_training/demo1.html), [![Launch Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/itsshaonlee/IMAGO-TRAINING-DEMOS/HEAD?urlpath=rstudio&filepath=demo1.Rmd) |
+| Exploring Imago Datasets | R | [Notebook](https://imago-sdruk.github.io/Imago_training/demo1.html), [![Launch Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/itsshaonlee/IMAGO-TRAINING-DEMOS/HEAD?urlpath=rstudio) |
 | Exploring Imago Datasets | Python | [Notebook](https://imago-sdruk.github.io/Imago_training/demo1.html), _Live code coming soon_ |
 
 ## 🛠️ Contributing
