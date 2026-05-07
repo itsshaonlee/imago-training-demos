@@ -3,7 +3,7 @@
 
 # Binder badge
 
-[![Launch Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/itsshaonlee/IMAGO-TRAINING-DEMOS/HEAD?urlpath=rstudio)
+[![Launch Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/itsshaonlee/IMAGO-TRAINING-DEMOS/HEAD?urlpath=rstudio&filepath=demo1.Rmd)
 
 # Imago Template Repository
 
