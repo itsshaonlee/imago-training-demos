@@ -1,6 +1,10 @@
 
 <img src="assets/Imago-logo.png" alt="Imago Logo" width="300"/>
 
+# Binder badge
+
+[![Launch Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/itsshaonlee/IMAGO-TRAINING-DEMOS/HEAD?urlpath=rstudio)
+
 # Imago Template Repository
 
 Welcome to the Imago template repository!  
