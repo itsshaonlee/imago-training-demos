@@ -38,6 +38,7 @@ library(readxl)      # Reading Excel files (IMD)
 
 # Spatial data and mapping
 library(sf)          # Simple Features
+library(patchwork)
 
 # Regression
 library(fixest)      # Fast OLS / fixed-effects models
@@ -51,7 +52,7 @@ The Imago air temperature product publishes one geopackage per year. Each file a
 
 ```{r}
 # Load the CSV temperature file
-temp_csv <- read_csv(".\\training\\data\\temperature_indicators_MSOA_2023.csv")
+temp_csv <- read_csv(".\\training\\data\\temperature_indicators_MSOA_2024.csv")
 glimpse(temp_csv)
 
 # Load the MSOA boundaries
@@ -60,8 +61,13 @@ glimpse(msoa_bounds)
 
 
 # Merge the two
-msoa_temp <- temp_csv %>%
-  left_join(msoa_bounds, by = c("data_zone_code" = "data_zone_code"))
+msoa_temp <- msoa_bounds %>%
+  left_join(temp_csv, by = c("data_zone_code" = "dt_zn_c"))
+
+# Ensure it is a spatial data frame  
+msoa_temp <- st_as_sf(msoa_temp, sf_column_name = "geom")
+# should now show "sf"
+glimpse(msoa_temp)
 
 ```
 This file contains all sixteen indicators in the product. For this training we work with two:
