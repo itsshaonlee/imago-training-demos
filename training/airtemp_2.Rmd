@@ -1,0 +1,221 @@
+---
+title: "Air temperature — 2. Panel data"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+
+**Goal**: Use the Imago air temperature product to explore the relationship between heat exposure and deprivation in England. We now explore a the panel data.
+
+------------------------------------------------------------------------
+
+## Installing packages
+
+
+```{r, message=FALSE, warning=FALSE}
+# Core data handling and plotting
+library(tidyverse)   # Data manipulation + ggplot2
+
+# Spatial data (used to read the per-year geopackages)
+library(sf)          # Simple Features
+
+```
+
+
+# Building air temperature panel {#sec-panel}
+
+The Imago air temperature product publishes one geopackage per year, covering 2015 to 2024. In this section we:
+
+1.  Load all ten years and stack them into a long-format panel,
+2.  Keep only the two indicators we need (`summer_max_tmp` and `extreme_hot_days_mean`),
+3.  Run sanity checks to confirm the panel is balanced and complete,
+4.  Produce two descriptive figures showing what has happened nationally over the decade.
+
+## Loading 2015–2024
+
+Each yearly file follows the convention `temperature_indicators_MSOA_<year>.gpkg`. We loop over the ten years, read each file, drop the geometry (to keep the panel light), keep only the columns we need, and stack the results into a single long table.
+
+
+```{r, message=FALSE}
+years <- 2015:2024
+
+temp_panel <- map_dfr(years, function(yr) {
+  path <- sprintf("./data/temperature_indicators_MSOA_%d.gpkg", yr)
+  read_sf(path) %>%
+    st_drop_geometry() %>%
+    select(dt_zn_c, summer_max_tmp, extreme_hot_days_mean) %>%
+    mutate(year = yr)
+})
+
+glimpse(temp_panel)
+```
+
+
+## Panel diagnostics
+
+Before doing anything analytical, we check that the panel behaves as expected. Three questions:
+
+1.  How many MSOAs do we have per year?
+2.  Is the panel balanced — does every MSOA appear in every year?
+3.  Are there missing values in either of our two indicators?
+
+
+```{r}
+# 1. MSOAs per year
+temp_panel %>%
+  count(year, name = "n_msoa")
+```
+
+```{r}
+# 2. Balanced panel check — does every MSOA appear in all 10 years?
+years_per_msoa <- temp_panel %>%
+  count(dt_zn_c, name = "n_years")
+
+table(years_per_msoa$n_years)
+```
+
+```{r}
+# 3. Missing values per indicator per year
+temp_panel %>%
+  group_by(year) %>%
+  summarise(
+    n_total               = n(),
+    miss_summer_max_tmp   = sum(is.na(summer_max_tmp)),
+    miss_extreme_hot_days = sum(is.na(extreme_hot_days_mean))
+  )
+```
+
+
+If the panel is balanced and complete, we can move on. If not, it is worth investigating before proceeding — unbalanced panels are not fatal but they do affect how some estimators behave.
+
+## National trends over the decade
+
+A first look: how have these two indicators evolved nationally? We compute the cross-MSOA mean and the interquartile range each year, and plot them.
+
+
+```{r}
+national_trends <- temp_panel %>%
+  pivot_longer(
+    cols = c(summer_max_tmp, extreme_hot_days_mean),
+    names_to = "indicator",
+    values_to = "value"
+  ) %>%
+  group_by(year, indicator) %>%
+  summarise(
+    mean_val = mean(value, na.rm = TRUE),
+    q25      = quantile(value, 0.25, na.rm = TRUE),
+    q75      = quantile(value, 0.75, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    indicator_label = recode(indicator,
+      "summer_max_tmp"        = "Summer maximum temperature (°C)",
+      "extreme_hot_days_mean" = "Extreme hot days (count)"
+    )
+  )
+```
+
+```{r, fig.width=9, fig.height=4}
+ggplot(national_trends, aes(x = year, y = mean_val)) +
+  geom_ribbon(aes(ymin = q25, ymax = q75), fill = "firebrick", alpha = 0.15) +
+  geom_line(colour = "firebrick", linewidth = 0.9) +
+  geom_point(colour = "firebrick", size = 1.5) +
+  facet_wrap(~ indicator_label, scales = "free_y") +
+  scale_x_continuous(breaks = years) +
+  labs(
+    title    = "National trends in heat exposure across MSOAs, 2015–2024",
+    subtitle = "Solid line: cross-MSOA mean. Shaded band: interquartile range.",
+    x = NULL, y = NULL,
+    caption = "Source: Imago air temperature indicators."
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    plot.title    = element_text(face = "bold"),
+    plot.subtitle = element_text(colour = "grey40"),
+    strip.text    = element_text(face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+```
+
+
+Two things to look for in the figure: (i) is there a level trend in either indicator, and (ii) is the IQR widening, narrowing, or stable? A widening IQR would suggest *all* MSOAs are not warming together — already a hint that the inequality story may be live.
+
+## A sample of trajectories
+
+The national mean hides a lot. To see panel structure directly, we plot the trajectories of 50 randomly sampled MSOAs against the national mean.
+
+
+```{r}
+set.seed(42)
+
+sample_codes <- temp_panel %>%
+  distinct(dt_zn_c) %>%
+  slice_sample(n = 50) %>%
+  pull(dt_zn_c)
+
+trajectories <- temp_panel %>%
+  filter(dt_zn_c %in% sample_codes) %>%
+  pivot_longer(
+    cols = c(summer_max_tmp, extreme_hot_days_mean),
+    names_to = "indicator",
+    values_to = "value"
+  ) %>%
+  mutate(
+    indicator_label = recode(indicator,
+      "summer_max_tmp"        = "Summer maximum temperature (°C)",
+      "extreme_hot_days_mean" = "Extreme hot days (count)"
+    )
+  )
+
+national_means <- national_trends %>%
+  select(year, indicator, indicator_label, mean_val)
+```
+
+```{r, fig.width=9, fig.height=4}
+ggplot() +
+  geom_line(
+    data = trajectories,
+    aes(x = year, y = value, group = dt_zn_c),
+    colour = "grey60", alpha = 0.4, linewidth = 0.3
+  ) +
+  geom_line(
+    data = national_means,
+    aes(x = year, y = mean_val),
+    colour = "firebrick", linewidth = 1
+  ) +
+  facet_wrap(~ indicator_label, scales = "free_y") +
+  scale_x_continuous(breaks = years) +
+  labs(
+    title    = "MSOA-level trajectories, 2015–2024",
+    subtitle = "Grey lines: 50 randomly sampled MSOAs. Red line: national mean.",
+    x = NULL, y = NULL
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    plot.title    = element_text(face = "bold"),
+    plot.subtitle = element_text(colour = "grey40"),
+    strip.text    = element_text(face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+```
+
+
+The trajectories make two things visible. First, individual MSOAs are noisy from year to year — single-year cross-sections (like Part 1) can be misleading. Second, the spread between MSOAs is large and the lines do not look parallel: some MSOAs may be warming faster than others. That is exactly the question Part 3 takes up.
+
+## Save the panel
+
+We save the assembled panel so Part 3 can pick it up without re-reading all ten geopackages.
+
+
+```{r}
+dir.create("./data/derived", showWarnings = FALSE, recursive = TRUE)
+write_csv(temp_panel, "./data/derived/temp_panel_2015_2024.csv")
+```
+
