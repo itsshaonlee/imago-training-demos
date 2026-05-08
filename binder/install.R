@@ -3,11 +3,14 @@ install.packages(c(
   "readr",
   "readxl",
   "sf",
+  "fixest",
   "tmap",
+  "patchwork",
   "geojsonsf",
   "osmdata",
   "viridis",
   "cowplot",
+  "gifski",
   "fs"
 ))
 
