@@ -47,9 +47,8 @@ Each yearly file follows the convention `temperature_indicators_MSOA_<year>.gpkg
 years <- 2015:2024
 
 temp_panel <- map_dfr(years, function(yr) {
-  path <- sprintf("./data/temperature_indicators_MSOA_%d.gpkg", yr)
-  read_sf(path) %>%
-    st_drop_geometry() %>%
+  path <- sprintf("./data/temperature_indicators_MSOA_%d.csv", yr)
+  read_csv(path) %>%
     select(dt_zn_c, summer_max_tmp, extreme_hot_days_mean) %>%
     mutate(year = yr)
 })

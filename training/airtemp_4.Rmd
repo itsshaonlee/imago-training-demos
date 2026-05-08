@@ -43,12 +43,9 @@ We need three things: the 2024 temperature geopackage (for geometry + summer max
 
 
 ```{r, message=FALSE}
-# 1. Temperature + geometry from the 2024 file
-msoa_temp <- read_sf("./data/temperature_indicators_MSOA_2024.gpkg") %>%
-  mutate(msoa21cd = trimws(as.character(dt_zn_c)))
+# 1. Temperature + geometry from the 2024 file (built in Part 1) - msoa_temp
 
-# 2. MSOA-level health rank (built in Part 1)
-msoa_imd_agg <- read_csv("./data/derived/msoa_imd_agg.csv")
+# 2. MSOA-level health rank (built in Part 1) - msoa_imd_agg
 
 # 3. Inner join, drop incomplete rows
 msoa_final_clean <- msoa_temp %>%
@@ -97,6 +94,8 @@ bi_palette <- c(
 
 
 ```{r, fig.width=9, fig.height=10}
+library(cowplot)
+
 p_map <- ggplot(msoa_bi) +
   geom_sf(aes(fill = bi_class), colour = NA) +
   scale_fill_manual(values = bi_palette) +
