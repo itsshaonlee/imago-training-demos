@@ -52,11 +52,11 @@ The Imago air temperature product publishes one geopackage per year. Each file a
 
 ```{r}
 # Load the CSV temperature file
-temp_csv <- read_csv(".\\training\\data\\temperature_indicators_MSOA_2024.csv")
+temp_csv <- read_csv("./data/temperature_indicators_MSOA_2024.csv")
 glimpse(temp_csv)
 
 # Load the MSOA boundaries
-msoa_bounds <- read_sf(".\\training\\data\\UK_MSOA_IZB_SDZ\\UK_MSOA_IZB_SDZ.gpkg")
+msoa_bounds <- read_sf("./data/UK_MSOA_IZB_SDZ/UK_MSOA_IZB_SDZ.gpkg")
 glimpse(msoa_bounds)
 
 
@@ -206,6 +206,7 @@ names(imd)
 ### LSOA → MSOA lookup
 
 We use the ONS [Postcode → OA → LSOA → MSOA → LAD best-fit lookup (May 2025)](https://geoportal.statistics.gov.uk/datasets/589ae01495bf4ddfaaa25b96476d53d7/about) to link LSOA codes to their parent MSOAs.
+There is a file provided in the training data, but you can use the code below to download and unzip the latest version from ONS if you want to work with the most up-to-date lookup. The code also ensures we clean up temporary files after use.
 
 
 ```{r, message=FALSE}
@@ -226,7 +227,7 @@ unzip(zip_file, exdir = unzipped_dir)
 unlink(zip_file)
 
 lookup_path <- list.files(
-  unzipped_dir, pattern = "\\\\.csv$",
+  unzipped_dir, pattern = "/.csv$",
   recursive = TRUE, full.names = TRUE
 )
 
@@ -235,6 +236,12 @@ LSOA21_MSOA21 <- read_csv(lookup_path) %>%
   distinct(lsoa21cd, .keep_all = TRUE)
 ```
 
+If you are using the provided file, you can load it directly like so:
+```{r}
+LSOA21_MSOA21 <- read_csv("./data/lsoa_msoa_lookup.csv") %>%
+  select(lsoa21cd, msoa21cd, ladcd, lsoa21nm, msoa21nm, ladnm) %>%
+  distinct(lsoa21cd, .keep_all = TRUE)
+```
 
 ### Aggregate IMD to MSOA
 
