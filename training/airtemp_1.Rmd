@@ -206,37 +206,8 @@ names(imd)
 ### LSOA → MSOA lookup
 
 We use the ONS [Postcode → OA → LSOA → MSOA → LAD best-fit lookup (May 2025)](https://geoportal.statistics.gov.uk/datasets/589ae01495bf4ddfaaa25b96476d53d7/about) to link LSOA codes to their parent MSOAs.
-There is a file provided in the training data, but you can use the code below to download and unzip the latest version from ONS if you want to work with the most up-to-date lookup. The code also ensures we clean up temporary files after use.
-
-
-```{r, message=FALSE}
-zip_file     <- tempfile(fileext = ".zip")
-unzipped_dir <- tempfile()
-
-on.exit({
-  unlink(zip_file)
-  unlink(unzipped_dir, recursive = TRUE)
-}, add = TRUE)
-
-download.file(
-  url = "https://www.arcgis.com/sharing/rest/content/items/7fc55d71a09d4dcfa1fd6473138aacc3/data",
-  destfile = zip_file, mode = "wb"
-)
-
-unzip(zip_file, exdir = unzipped_dir)
-unlink(zip_file)
-
-lookup_path <- list.files(
-  unzipped_dir, pattern = "/.csv$",
-  recursive = TRUE, full.names = TRUE
-)
-
-LSOA21_MSOA21 <- read_csv(lookup_path) %>%
-  select(lsoa21cd, msoa21cd, ladcd, lsoa21nm, msoa21nm, ladnm) %>%
-  distinct(lsoa21cd, .keep_all = TRUE)
-```
-
-If you are using the provided file, you can load it directly like so:
+To ease working with the lookup, a smaller file containing just the relevant columns is provided in the `data` folder. You can also download the full file from ONS and use it, but be aware that it is quite large (over 1GB) and may crash this Binder session.
+With provided file, you can load it directly like so:
 ```{r}
 LSOA21_MSOA21 <- read_csv("./data/lsoa_msoa_lookup.csv") %>%
   select(lsoa21cd, msoa21cd, ladcd, lsoa21nm, msoa21nm, ladnm) %>%
