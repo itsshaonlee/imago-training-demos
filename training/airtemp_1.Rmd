@@ -246,7 +246,7 @@ IMD only covers England. The MSOA boundary file covers the whole UK. The join be
 
 ```{r}
 msoa_temp <- msoa_temp %>%
-  mutate(msoa21cd = trimws(as.character(dt_zn_c)))
+  mutate(msoa21cd = trimws(as.character(data_zone_code)))
 
 msoa_2024 <- msoa_imd_agg %>%
   left_join(
