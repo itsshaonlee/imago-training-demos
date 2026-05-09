@@ -245,9 +245,10 @@ gifski::save_gif(
   delay    = 0.15,    # seconds per frame
   res      = 96
 )
+
+knitr::include_graphics("./hotspot_animation_lite.gif")
 ```
 
-![Animated hotspot zoom](hotspot_animation_lite.gif)
 
 ::: callout-tip
 ## If the animation still fails
