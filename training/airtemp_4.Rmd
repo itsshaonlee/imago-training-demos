@@ -246,7 +246,7 @@ gifski::save_gif(
   res      = 96
 )
 
-![Animated hotspot zoom](hotspot_animation_lite.gif)
+knitr::include_graphics("./hotspot_animation_lite.gif")
 ```
 
 
