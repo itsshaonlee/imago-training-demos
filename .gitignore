@@ -1,3 +1,7 @@
+# User-downloaded workshop data (not committed; see notebook instructions)
+training/python/data/*
+!training/python/data/.gitkeep
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
