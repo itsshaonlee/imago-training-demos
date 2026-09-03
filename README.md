@@ -7,10 +7,15 @@ This repository contains materials for our workshop on exploring Imago datasets 
 
 ## 🚀 Launch Workshop
 
+<!-- TODO: The Python Binder links below point at the spf_notebooks branch because
+     this work isn't merged into main yet. Once spf_notebooks is merged into main,
+     switch these two links back to /HEAD? (matching the R row above). -->
+
 | Demo | Language | Launch |
 |------|----------|--------|
 | Exploring Imago Datasets | R | [Notebook](https://imago-sdruk.github.io/Imago_training/demo1.html), [![Launch Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/itsshaonlee/IMAGO-TRAINING-DEMOS/HEAD?) |
-| Exploring Imago Datasets | Python | [Notebook](https://imago-sdruk.github.io/Imago_training/demo1.html), _Live code coming soon_ |
+| SPF: Comparing 2024 and 2025 | Python | [![Launch Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/itsshaonlee/IMAGO-TRAINING-DEMOS/spf_notebooks?filepath=training/python/spf_1.ipynb) |
+| SPF & General Health | Python | [![Launch Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/itsshaonlee/IMAGO-TRAINING-DEMOS/spf_notebooks?filepath=training/python/spf_2.ipynb) |
 
 ## 🛠️ Contributing
 We welcome contributions of all kinds—code, documentation, ideas, and more!  
@@ -32,9 +37,14 @@ See the [LICENSE](LICENSE) file for full details.
 
 ## 🗂️ Repository Structure
 - `assets/` — Shared assets: logo and images
-- `binder/` — Binder configuration: `runtime.txt`, `install.R`, `apt.txt`
-- `data/` — Imago data products and boundary files
-- `demo1.Rmd` — Main workshop notebook: exploring temperature and health deprivation
+- `binder/` — Binder configuration: `runtime.txt`, `install.R`, `apt.txt` (R), `requirements.txt` (Python)
+- `training/` — Workshop notebooks
+  - `airtemp_1.Rmd`–`airtemp_4.Rmd` — R notebooks: exploring temperature and health deprivation
+  - `data/` — Imago data products and boundary files used by the R notebooks
+  - `python/` — Python notebooks: exploring the Sun Probability Framework (SPF)
+    - `spf_1.ipynb` — Comparing SPF between 2024 and 2025
+    - `spf_2.ipynb` — SPF and self-reported general health
+    - `data/` — Not committed; each notebook explains what to download and place here
 - `.github/` — Issue/PR templates
 - `CONTRIBUTING.md` — How to contribute to this project
 - `CODE_OF_CONDUCT.md` — Community standards and expectations
