@@ -7,11 +7,15 @@ This repository contains materials for our workshop on exploring Imago datasets 
 
 ## 🚀 Launch Workshop
 
+<!-- TODO: The Python Binder links below point at the spf_notebooks branch because
+     this work isn't merged into main yet. Once spf_notebooks is merged into main,
+     switch these two links back to /HEAD? (matching the R row above). -->
+
 | Demo | Language | Launch |
 |------|----------|--------|
 | Exploring Imago Datasets | R | [Notebook](https://imago-sdruk.github.io/Imago_training/demo1.html), [![Launch Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/itsshaonlee/IMAGO-TRAINING-DEMOS/HEAD?) |
-| SPF: Comparing 2024 and 2025 | Python | [![Launch Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/itsshaonlee/IMAGO-TRAINING-DEMOS/HEAD?filepath=training/python/spf_1.ipynb) |
-| SPF & General Health | Python | [![Launch Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/itsshaonlee/IMAGO-TRAINING-DEMOS/HEAD?filepath=training/python/spf_2.ipynb) |
+| SPF: Comparing 2024 and 2025 | Python | [![Launch Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/itsshaonlee/IMAGO-TRAINING-DEMOS/spf_notebooks?filepath=training/python/spf_1.ipynb) |
+| SPF & General Health | Python | [![Launch Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/itsshaonlee/IMAGO-TRAINING-DEMOS/spf_notebooks?filepath=training/python/spf_2.ipynb) |
 
 ## 🛠️ Contributing
 We welcome contributions of all kinds—code, documentation, ideas, and more!  
